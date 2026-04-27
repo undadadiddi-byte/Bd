@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>С Днем Рождения</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial;
+    color: white;
+}
+
+/* фон */
+.bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url("bg2.jpg") center/cover no-repeat;
+    filter: blur(20px);
+    opacity: 0;
+    transition: all 3s ease;
+    z-index: -2;
+}
+.bg.show {
+    filter: blur(0);
+    opacity: 1;
+}
+
+/* затемнение */
+.overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: -1;
+}
+
+/* рамка снизу */
+.messageBox {
+    position: absolute;
+    bottom: 30px;
+    width: 80%;
+    padding: 15px 20px;
+    border: 2px solid white;
+    border-radius: 10px;
+    font-size: 35px;
+    background: rgba(0,0,0,0.4);
+    opacity: 0;
+}
+
+/* текст печатается */
+#text {
+    white-space: pre-wrap;
+}
+
+/* конфетти */
+.confetti {
+    position: absolute;
+    animation: fall linear forwards;
+}
+
+/* формы */
+.rect { width: 8px; height: 14px; }
+.square { width: 10px; height: 10px; }
+
+.triangle {
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 12px solid red;
+}
+
+/* падение */
+@keyframes fall {
+    from { transform: translateY(-100vh) rotate(0deg); }
+    to { transform: translateY(100vh) rotate(360deg); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg" id="bg"></div>
+<div class="overlay"></div>
+
+<div class="messageBox" id="box">
+    <div id="text"></div>
+</div>
+
+<!-- музыка -->
+<audio id="music">
+    <source src="bd.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+let bg = document.getElementById("bg");
+let box = document.getElementById("box");
+let textEl = document.getElementById("text");
+let music = document.getElementById("music");
+
+// 🎉 конфетти (один раз)
+function createConfetti() {
+    let shapes = ["rect", "square", "triangle"];
+
+    for (let i = 0; i < 120; i++) {
+        let c = document.createElement("div");
+        let shape = shapes[Math.floor(Math.random() * shapes.length)];
+        c.className = "confetti " + shape;
+
+        c.style.left = Math.random()*100 + "vw";
+
+        let color = `hsl(${Math.random()*360},100%,60%)`;
+
+        if (shape === "triangle") {
+            c.style.borderBottomColor = color;
+        } else {
+            c.style.background = color;
+        }
+
+        c.style.animationDuration = (Math.random()*2+3) + "s";
+
+        document.body.appendChild(c);
+
+        setTimeout(() => c.remove(), 4000);
+    }
+}
+createConfetti();
+
+// 🌄 фон появляется из блюра
+setTimeout(() => {
+    bg.classList.add("show");
+}, 1000);
+
+// 🎵 музыка после появления фона
+setTimeout(() => {
+    music.play().catch(()=>{});
+}, 4000);
+
+// 💬 рамка + печать текста
+let message = "Моя Милота с днем рождения , будьте так же прекрасны и вкусны как сейчас , желаю много счастья с воробушком и денег в достатке , Твой Воробушек-Кус";
+
+function typeText(text, element, speed=40) {
+    let i = 0;
+    let interval = setInterval(() => {
+        element.innerHTML += text[i];
+        i++;
+        if (i >= text.length) clearInterval(interval);
+    }, speed);
+}
+
+setTimeout(() => {
+    box.style.opacity = 1;
+    typeText(message, textEl);
+}, 5000);
+
+</script>
+
+</body>
+</html>

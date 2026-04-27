@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Открыть</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial;
+    overflow: hidden;
+}
+
+/* фон */
+.bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url("bg.jpg") center/cover no-repeat;
+    filter: blur(10px);
+    z-index: -1;
+}
+
+/* кнопка */
+.btn {
+    padding: 18px 36px;
+    font-size: 22px;
+    border: none;
+    border-radius: 25px;
+    background: #ff4d6d;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 8px #c9184a;
+    transition: all 0.1s ease;
+}
+
+.btn:active {
+    transform: translateY(5px);
+    box-shadow: 0 3px #c9184a;
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+
+<button class="btn" onclick="go()">//нажми сюда\\</button>
+
+<!-- звук клика -->
+<audio id="clickSound">
+    <source src="click.mp3" type="audio/mpeg">
+</audio>
+
+<!-- звук перехода -->
+<audio id="whoosh">
+    <source src="whoosh.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+let clickSound = document.getElementById("clickSound");
+let whoosh = document.getElementById("whoosh");
+
+function go() {
+    clickSound.currentTime = 0;
+    clickSound.play().catch(()=>{});
+
+    setTimeout(() => {
+        whoosh.currentTime = 0;
+        whoosh.play().catch(()=>{});
+    }, 150);
+
+    // переход с задержкой
+    setTimeout(() => {
+        window.location.href = "birthday.html";
+    }, 600);
+}
+</script>
+
+</body>
+</html>
